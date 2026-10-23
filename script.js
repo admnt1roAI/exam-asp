@@ -1,4 +1,3 @@
-const TOTAL_PREGUNTAS = 30;
 let preguntas = [];
 const cuestionario = document.getElementById("cuestionario");
 const listaPreguntas = document.getElementById("questions-list");
@@ -59,7 +58,6 @@ function mostrarPreguntas() {
     card.append(title, text, options);
     listaPreguntas.append(card);
   });
-  document.getElementById("exam-count").textContent = String(preguntas.length);
 }
 
 async function cargarExamen() {
