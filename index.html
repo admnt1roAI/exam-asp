@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Examen teórico de práctica para postulantes ASP.">
+  <title>Examen teórico ASP</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="eyebrow">EXAMEN DE POSTULANTES</div>
+    <h1>EXAMEN TEÓRICO ASP</h1>
+    <p><span id="exam-count">30</span> preguntas por examen</p>
+  </header>
+  <main class="page-shell">
+    <section class="card">
+      <p id="status" class="notice" role="status" aria-live="polite">Cargando preguntas…</p>
+      <form id="cuestionario" autocomplete="off" hidden>
+        <div class="candidate-fields">
+          <label for="nombre">Apellidos y nombres
+            <input id="nombre" name="nombre" type="text" maxlength="120" autocomplete="name" required>
+          </label>
+          <label for="dni">DNI
+            <input id="dni" name="dni" type="text" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" placeholder="8 dígitos" required>
+          </label>
+        </div>
+        <div id="questions-list"></div>
+        <div class="actions">
+          <button id="guardar" type="submit">ENVIAR EXAMEN</button>
+          <button id="reiniciar" class="secondary" type="button" hidden>OTRO EXAMEN</button>
+        </div>
+      </form>
+      <section id="resultado" aria-live="polite" hidden></section>
+    </section>
+  </main>
+  <footer>Examen de práctica para postulantes</footer>
+</body>
+</html>

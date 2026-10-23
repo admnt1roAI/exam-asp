@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Administrar preguntas ASP</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js" defer></script>
+</head>
+<body>
+<header class="admin-top"><div><p>EXAMEN DE POSTULANTES</p><h1>Administrar banco ASP</h1></div><a href="./">Ver examen público</a></header>
+<main class="shell">
+  <section id="login-panel" class="panel login-panel">
+    <h2>Ingreso de administrador</h2><p>Usa la cuenta autorizada en Supabase Auth.</p>
+    <form id="login-form"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required><button id="login-button">Ingresar</button></form>
+    <p id="login-message" class="notice" role="status" hidden></p>
+  </section>
+  <section id="admin-panel" hidden>
+    <div class="panel heading"><div><h2>Preguntas ASP</h2><p>Sesión: <span id="admin-email"></span></p></div><button id="logout-button" class="secondary">Cerrar sesión</button></div>
+    <p id="admin-message" class="notice" role="status" hidden></p>
+    <section class="panel editor"><h2 id="editor-title">Agregar pregunta</h2>
+      <form id="question-form"><input id="question-id" type="hidden"><label for="question-text">Pregunta</label><textarea id="question-text" rows="3" maxlength="2000" required></textarea>
+        <fieldset><legend>Alternativas (completa las cuatro)</legend>
+          <label class="option"><b>A</b><input id="option-a" maxlength="1000" required></label><label class="option"><b>B</b><input id="option-b" maxlength="1000" required></label><label class="option"><b>C</b><input id="option-c" maxlength="1000" required></label><label class="option"><b>D</b><input id="option-d" maxlength="1000" required></label>
+        </fieldset>
+        <label for="correct-answer">Alternativa correcta</label><select id="correct-answer"><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option></select>
+        <label for="explanation">Explicación</label><textarea id="explanation" rows="3" maxlength="3000"></textarea>
+        <div class="actions"><button id="save-question">Guardar pregunta</button><button id="cancel-edit" class="secondary" type="button" hidden>Cancelar edición</button></div>
+      </form>
+    </section>
+    <section class="panel"><div class="toolbar"><div><h2>Banco de preguntas</h2><p><span id="question-count">0</span> preguntas</p></div><input id="search-questions" type="search" placeholder="Buscar pregunta"></div><div id="question-list"></div></section>
+  </section>
+</main><footer>Panel privado ASP · Banco almacenado en Supabase</footer>
+</body></html>
