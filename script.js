@@ -12,6 +12,10 @@ function isQuestionContent(node) {
   return Boolean(element?.closest(".q-card, .answer-card"));
 }
 
+document.addEventListener("selectstart", (event) => {
+  if (isQuestionContent(event.target)) event.preventDefault();
+}, true);
+
 document.addEventListener("contextmenu", (event) => {
   if (isQuestionContent(event.target)) event.preventDefault();
 });
