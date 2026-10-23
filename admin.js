@@ -10,9 +10,14 @@ const saveButton = document.getElementById("save-question");
 const cancelEdit = document.getElementById("cancel-edit");
 const examState = document.getElementById("exam-state");
 const toggleExamButton = document.getElementById("toggle-exam");
+const questionLimitForm = document.getElementById("question-limit-form");
+const questionLimitInput = document.getElementById("exam-question-limit");
+const saveQuestionLimitButton = document.getElementById("save-question-limit");
+const questionLimitMessage = document.getElementById("question-limit-message");
 let client;
 let questions = [];
 let examEnabled = false;
+let examQuestionCount = 30;
 
 function showMessage(element, message, success = false) {
   element.textContent = message;
@@ -57,12 +62,25 @@ async function verifyAdmin() {
 async function loadExamSetting() {
   examState.textContent = "Consultando estado…";
   toggleExamButton.disabled = true;
-  const { data, error } = await client.from("asp_exam_settings").select("enabled").eq("id", 1).single();
+  const { data, error } = await client.from("asp_exam_settings").select("enabled,question_count").eq("id", 1).single();
   if (error) {
     examState.textContent = `No se pudo consultar el estado: ${error.message}`;
     throw error;
   }
+  examQuestionCount = Number(data.question_count);
+  questionLimitInput.value = String(examQuestionCount);
   showExamState(data.enabled);
+  updateQuestionLimitMessage();
+}
+
+function updateQuestionLimitMessage(message) {
+  questionLimitMessage.classList.remove("error");
+  if (message) {
+    questionLimitMessage.textContent = message;
+    return;
+  }
+  const actualCount = Math.min(examQuestionCount, questions.length);
+  questionLimitMessage.textContent = `Configurado: ${examQuestionCount} preguntas. Banco actual: ${questions.length}. En cada examen se mostrarán ${actualCount}.`;
 }
 
 async function enterAdmin(session) {
@@ -91,6 +109,7 @@ async function loadQuestions() {
   }
   questions = data || [];
   document.getElementById("question-count").textContent = String(questions.length);
+  updateQuestionLimitMessage();
   renderQuestions();
   adminMessage.hidden = true;
 }
@@ -184,6 +203,30 @@ if (!config?.supabaseUrl || !config?.supabaseKey || !window.supabase?.createClie
       return;
     }
     showExamState(data.enabled, data.enabled ? "Examen público ENCENDIDO" : "Examen público APAGADO");
+  });
+
+  questionLimitForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const requestedCount = Number(questionLimitInput.value);
+    if (!Number.isSafeInteger(requestedCount) || requestedCount < 1 || requestedCount > 2147483647) {
+      questionLimitInput.setCustomValidity("Ingresa una cantidad entera mayor que cero.");
+      questionLimitInput.reportValidity();
+      questionLimitInput.setCustomValidity("");
+      return;
+    }
+    saveQuestionLimitButton.disabled = true;
+    questionLimitMessage.textContent = "Guardando cantidad…";
+    const { data, error } = await client.from("asp_exam_settings")
+      .update({ question_count: requestedCount }).eq("id", 1).select("question_count").single();
+    saveQuestionLimitButton.disabled = false;
+    if (error) {
+      questionLimitMessage.classList.add("error");
+      questionLimitMessage.textContent = `No se pudo guardar la cantidad: ${error.message}`;
+      return;
+    }
+    examQuestionCount = Number(data.question_count);
+    questionLimitInput.value = String(examQuestionCount);
+    updateQuestionLimitMessage("Cantidad guardada. La próxima carga del examen usará este número.");
   });
 
   document.getElementById("logout-button").addEventListener("click", async () => {

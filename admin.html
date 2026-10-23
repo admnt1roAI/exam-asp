@@ -22,6 +22,15 @@
       <div><h2 id="exam-control-title">Disponibilidad del examen público</h2><p id="exam-state" class="exam-state" role="status" aria-live="polite">Consultando estado…</p></div>
       <button id="toggle-exam" type="button" disabled>ENCENDER EXAMEN</button>
     </section>
+    <section class="panel question-limit" aria-labelledby="question-limit-title">
+      <div><h2 id="question-limit-title">Cantidad de preguntas del examen</h2><p>Elige cuántas preguntas recibirá cada postulante. Si el banco tiene menos, se mostrarán las disponibles.</p></div>
+      <form id="question-limit-form" class="question-limit-form">
+        <label for="exam-question-limit">Preguntas por examen</label>
+        <input id="exam-question-limit" type="number" min="1" max="2147483647" step="1" inputmode="numeric" required>
+        <button id="save-question-limit" type="submit">Guardar cantidad</button>
+      </form>
+      <p id="question-limit-message" class="question-limit-message" role="status" aria-live="polite">Cargando configuración…</p>
+    </section>
     <p id="admin-message" class="notice" role="status" hidden></p>
     <section class="panel editor"><h2 id="editor-title">Agregar pregunta</h2>
       <form id="question-form"><input id="question-id" type="hidden"><label for="question-text">Pregunta</label><textarea id="question-text" rows="3" maxlength="2000" required></textarea>
