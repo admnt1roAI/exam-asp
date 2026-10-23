@@ -18,6 +18,10 @@
   </section>
   <section id="admin-panel" hidden>
     <div class="panel heading"><div><h2>Preguntas ASP</h2><p>Sesión: <span id="admin-email"></span></p></div><button id="logout-button" class="secondary">Cerrar sesión</button></div>
+    <section class="panel exam-control" aria-labelledby="exam-control-title">
+      <div><h2 id="exam-control-title">Disponibilidad del examen público</h2><p id="exam-state" class="exam-state" role="status" aria-live="polite">Consultando estado…</p></div>
+      <button id="toggle-exam" type="button" disabled>ENCENDER EXAMEN</button>
+    </section>
     <p id="admin-message" class="notice" role="status" hidden></p>
     <section class="panel editor"><h2 id="editor-title">Agregar pregunta</h2>
       <form id="question-form"><input id="question-id" type="hidden"><label for="question-text">Pregunta</label><textarea id="question-text" rows="3" maxlength="2000" required></textarea>

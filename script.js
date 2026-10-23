@@ -71,6 +71,11 @@ async function cargarExamen() {
   botonNuevo.hidden = true;
   try {
     const data = await llamarFuncion({ method: "GET", cache: "no-store" });
+    if (data.enabled === false) {
+      estado.textContent = data.message || "El examen está apagado temporalmente. Consulta con el administrador.";
+      botonNuevo.hidden = true;
+      return;
+    }
     preguntas = data.questions || [];
     if (!preguntas.length) throw new Error("Supabase no devolvió preguntas. Revisa que el banco se haya importado.");
     mostrarPreguntas();
@@ -149,6 +154,10 @@ cuestionario.addEventListener("submit", async (event) => {
   } catch (error) {
     estado.textContent = error.message;
     botonEnviar.disabled = false;
+    if (error.message.includes("apagado temporalmente")) {
+      cuestionario.hidden = true;
+      botonNuevo.hidden = true;
+    }
   }
 });
 
