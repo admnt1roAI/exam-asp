@@ -7,6 +7,30 @@ const botonEnviar = document.getElementById("guardar");
 const botonNuevo = document.getElementById("reiniciar");
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwCrLz9VpKlwMgLo1enuQRZhXDrg1hfTWiG_AdtA8DScamLSofI9eeuWUleLaHSdH8JaA/exec";
 
+function isQuestionContent(node) {
+  const element = node instanceof Element ? node : node?.parentElement;
+  return Boolean(element?.closest(".q-card, .answer-card"));
+}
+
+document.addEventListener("contextmenu", (event) => {
+  if (isQuestionContent(event.target)) event.preventDefault();
+});
+
+document.addEventListener("copy", (event) => {
+  const selection = window.getSelection();
+  if (selection && (isQuestionContent(selection.anchorNode) || isQuestionContent(selection.focusNode))) {
+    event.preventDefault();
+  }
+});
+
+document.addEventListener("cut", (event) => {
+  if (isQuestionContent(event.target)) event.preventDefault();
+});
+
+document.addEventListener("dragstart", (event) => {
+  if (isQuestionContent(event.target)) event.preventDefault();
+});
+
 function apiUrl() {
   const base = window.EXAM_CONFIG?.supabaseUrl?.trim();
   if (!base || base.includes("TU-PROYECTO") || !window.EXAM_CONFIG?.supabaseKey || window.EXAM_CONFIG.supabaseKey.includes("TU_CLAVE")) {
